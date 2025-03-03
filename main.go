@@ -1,17 +1,24 @@
 package main
 
 import (
-	"authentification_service/storage"
+	"authentification_service/server"
 	"fmt"
+	"log"
+	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	s, _ := storage.New()
-	new_user := storage.User{Login: "new_login1", Password: "new_password1"}
-	err := s.SaveUser(&new_user)
-	if err != nil {
-		panic(err)
-	}
-	code, _ := s.GetCode(&storage.User{Login: "new_login1", Password: "new_password1"})
-	fmt.Println(code)
+	r := mux.NewRouter()
+
+	api := r.PathPrefix("/api").Subrouter()
+	api.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, "2fa api")
+	})
+	api.HandleFunc("/check", server.CheckTOTPCodeHandler).Methods(http.MethodPost)
+	api.HandleFunc("/users/get", server.GetUserRandomCodeHandler).Methods(http.MethodPost)
+	api.HandleFunc("/users/add", server.AddUserHandler).Methods(http.MethodPost)
+
+	log.Fatal(http.ListenAndServe(":8080", r))
 }
