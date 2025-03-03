@@ -20,7 +20,7 @@ type Storage struct {
 func New() (*Storage, error) {
 	const op = "storage.New"
 
-	db, err := sql.Open("mysql", "root:Art#1046@tcp(localhost:3306)/2fa_service")
+	db, err := sql.Open("mysql", "root:***@tcp(localhost:3306)/2fa_service")
 	if err != nil {
 		panic(err)
 	}
