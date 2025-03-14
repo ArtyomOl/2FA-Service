@@ -15,7 +15,7 @@ type User struct {
 func (s *Storage) CheckUser(login string, password string) (bool, error) {
 	const op = "storage.users.CheckUser"
 
-	stmtSelectAll, err := s.db.Prepare("SELECT user_id FROM users WHERE login = ? AND password = ?")
+	stmtSelectAll, err := s.db.Prepare("SELECT user_id FROM users WHERE user_login = $1 AND user_password = $2")
 	if err != nil {
 		return false, fmt.Errorf("%s: %w", op, err)
 	}

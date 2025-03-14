@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
 )
 
 type Storage struct {
@@ -16,22 +17,36 @@ type Storage struct {
 	stmtSelect *sql.Stmt
 }
 
+const (
+	host     = "localhost"
+	port     = 5432
+	user     = "postgres"
+	password = "***"
+	dbname   = "2fa_service"
+)
+
 // Подключение к базе данных
 func New() (*Storage, error) {
 	const op = "storage.New"
 
-	db, err := sql.Open("mysql", "root:***@tcp(localhost:3306)/2fa_service")
-	if err != nil {
-		panic(err)
+	if password == "***" {
+		fmt.Println("Change password")
 	}
-	//defer db.Close()
 
-	stmtInsert, err := db.Prepare("INSERT INTO users(login, password, code) VALUES(?, ?, ?)")
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbname)
+
+	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	stmtSelect, err := db.Prepare("SELECT code FROM users WHERE login = ?")
+	stmtInsert, err := db.Prepare("INSERT INTO users(user_login, user_password, code) VALUES($1, $2, $3)")
+	if err != nil {
+		return nil, fmt.Errorf("%s: %w", op, err)
+	}
+
+	stmtSelect, err := db.Prepare("SELECT code FROM users WHERE user_login = $1")
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
@@ -41,6 +56,7 @@ func New() (*Storage, error) {
 
 // Добавление данных нового пользователя в базу данных
 func (s *Storage) SaveUser(login string, password string) error {
+	fmt.Println("work!!!!!!!!!!!!!!!!!!!1")
 	const op = "storage.SaveUser"
 
 	random_code := random.RandomToken()

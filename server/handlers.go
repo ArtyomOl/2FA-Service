@@ -34,6 +34,7 @@ func CheckTOTPCodeHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
+	defer s.Close()
 
 	code, err := s.GetCode(req.Login)
 	if err != nil {
@@ -100,6 +101,8 @@ func GetUserRandomCodeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddUserHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("work!!!!!!!!!!!!!!1")
+
 	w.Header().Set("Content-Type", "application/json")
 
 	var req struct {
