@@ -3,3 +3,9 @@ http_server:
   address: "localhost:8082"
   user: "my_user"
   password: "my_pass"
+postgres:
+  host: "localhost"
+  port: 5432
+  user: "postgres"
+  password: "password"
+  dbname: "mydb"

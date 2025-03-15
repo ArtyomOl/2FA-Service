@@ -74,7 +74,7 @@ func (s *Storage) SaveUser(login string, password string) error {
 }
 
 // Получение текущего кода пользователя
-func (s *Storage) GetCode(login string) (string, error) {
+func (s *Storage) GetCode(login string) (bool, string, error) {
 	const op = "storage.GetCode"
 
 	var code string
@@ -84,12 +84,12 @@ func (s *Storage) GetCode(login string) (string, error) {
 	err := s.stmtSelect.QueryRow(login_hash).Scan(&code)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return "-", nil
+			return false, "", nil
 		}
-		return "", fmt.Errorf("%s: %w", op, err)
+		return false, "", fmt.Errorf("%s: %w", op, err)
 	}
 
-	return code, nil
+	return true, code, nil
 }
 
 // Закрытие подключения к бд

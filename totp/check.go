@@ -10,7 +10,7 @@ func CheckTimeBasedCode(login string, send_code int) bool {
 		panic(err)
 	}
 
-	code, _ := s.GetCode(login)
+	_, code, _ := s.GetCode(login)
 	true_code := CreateTimeBasedCode(code)
 	return true_code == send_code
 }
