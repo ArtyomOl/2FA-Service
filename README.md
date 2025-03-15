@@ -4,13 +4,13 @@ This is a microservice designed for two-factor authentication using time-based o
 
 ### API:
 POST:  
-localhost:8080/api/check --data {"login": \<string\> ,"code": \<int\> } - to check the correctness of the time-based code  
-Response: {"status": bool, "message": string}  
+`localhost:8080/api/check --data {"login": \<string\> ,"code": \<int\> }` - to check the correctness of the time-based code  
+Response: `{"status": bool, "message": string}`  
   
-localhost:8080/api/users/get --data {"login": \<string\> ,"password": \<string\> } - to verify the password is correct ang get the gain to generate TOTP  
-Response: {"status": bool, "code": string}  
+`localhost:8080/api/users/get --data {"login": \<string\> ,"password": \<string\> }` - to verify the password is correct ang get the gain to generate TOTP  
+Response: `{"status": bool, "code": string}`  
   
-localhost:8080/api/users/add --data {"login": \<string\> ,"password": \<string\> } - to add new user  
+`localhost:8080/api/users/add --data {"login": \<string\> ,"password": \<string\> }` - to add new user  
 
 ### Operating principle:
 Using the API, you can check the current totp correctness, knowing the user's login.  
