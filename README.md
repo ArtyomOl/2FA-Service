@@ -13,7 +13,7 @@ Response: {"status": bool, "code": string}
 localhost:8080/api/users/add --data {"login": \<string\> ,"password": \<int\> } - to add new user  
 
 ### Operating principle:
-Using the API, you can check the current totp go correctness, knowing the user's login.  
+Using the API, you can check the current totp correctness, knowing the user's login.  
 This feature is blocked after three unsuccessful attempts, and you'll have to wait 30 seconds to continue.  
   
 The TOTP is generated based on the current time and a secret code that is generated randomly for each user when it is added to the database.  
